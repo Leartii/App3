@@ -4,6 +4,7 @@ const cors = require('cors');
 const dns = require('dns');
 const req = require('express/lib/request');
 const { rawListeners } = require('process');
+const bodyParser = require('body-parser');
 const app = express();
 
 // Basic Configuration
@@ -12,16 +13,18 @@ const options = {
   hints: dns.ADDRCONFIG | dns.V4MAPPED,
 };
 const port = process.env.PORT || 3000;
-app.use(express.urlencoded({extended : false}))
+app.use(bodyParser.urlencoded({extended : false}))
 app.use(cors());
 app.use('/public', express.static(`${process.cwd()}/public`));
 app.use((req,res,next) => {
   if(isURL(req.body.url)){ 
     console.log(typeof req.body.url)
     console.log(req.body.url);
-    dns.lookup(req.body.url,options , (err, address, family) => {
+    let url = req.body.url.replace("https://","");
+    console.log("test url : "+url);
+    dns.lookup(url, (err, address, family) => {
       if(err){
-        console.log(err);
+        console.log("Error"+err);
         next();
       } else {
         console.log
@@ -31,6 +34,7 @@ app.use((req,res,next) => {
     })
   } else {
     req.body.urlshort = 'invalid url'
+    next();
   }
 })
 
