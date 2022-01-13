@@ -33,6 +33,7 @@ app.get('/api/hello', function(req, res) {
 });
 app.post('/api/shorturl', (req,res,next) => {
   if(isURL(req.body.url)){ 
+    console.log(req.body.url+" is "+isURL(req.body.url))
     let url = req.body.url.replace("https://","");
     console.log("test url : "+url);
     dns.lookup(url, (err, address, family) => {
@@ -82,7 +83,7 @@ app.listen(port, function() {
 
 function isURL(str) {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
   '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
   '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
