@@ -39,7 +39,7 @@ app.post('/api/shorturl', (req,res,next) => {
     dns.lookup(url, (err, address, family) => {
       if(err){
         console.log("Error"+err);
-        next();
+        res.json({error : "invalid url"})
       } else {
         req.body.urlshort = address;
         let web = new addr({short_url : address, original_url : req.body.url});
