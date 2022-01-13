@@ -8,9 +8,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
 const Schema = mongoose.Schema;
 let webschema = new Schema({
   short_url : { type : String , unique : true, required : true, dropDups: true },
