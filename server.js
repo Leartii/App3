@@ -4,6 +4,7 @@ const cors = require('cors');
 const dns = require('dns');
 const req = require('express/lib/request');
 const { rawListeners } = require('process');
+const urlparser = require('url');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require("mongoose");
@@ -36,7 +37,7 @@ app.post('/api/shorturl', (req,res,next) => {
     console.log(req.body.url+" is "+isURL(req.body.url))
     let url = req.body.url.replace("https://","");
     console.log("test url : "+url);
-    dns.lookup(url, (err, address, family) => {
+    dns.lookup(urlparser.parse(req.body.url).hostname, (err, address, family) => {
       if(err){
         console.log("Error"+err);
         res.json({error : "invalid url"})
